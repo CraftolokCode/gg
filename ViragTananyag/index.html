@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virágfelismerő Kvíz</title>
+  <link rel="shortcut icon" href="img/icon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <center><h1 class="head_txt">Virágfelismerő Kvíz</h1></center>
+  
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+        h1 {
+            margin: 50px;
+            font-size: 40px;
+        }
+
+        .head_txt {
+            text-align: center;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        div {
+            width: clamp(350px, 50%, 900px);
+            background: white;
+            margin: auto;
+            margin-bottom: 80px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 35px gray, 0px 0px 65px gray, 0px 0px 95px gray;
+        }
+
+        button {
+            border-radius: 20px;
+            width: 300px;
+            height: 80px;
+            background: white;
+            border: none;
+            font-size: 35px;
+            padding-inline: 30px;
+            padding-block: 10px;
+            box-shadow: 0px 0px 5px gray, 0px 0px 10px gray, 0px 0px 15px gray;
+            font-weight: bold;
+            margin: 80px;
+            cursor: pointer;
+        }
+
+        input {
+            display: inline-block;
+            margin-top: 20px;
+            line-height: 20px;
+        }
+
+        @media screen and (max-width: 470px) {
+            div img {
+                width: 200px !important;
+            }
+
+            div {
+                width: clamp(250px, 50%, 900px);
+            }
+
+            button {
+                margin: 0;
+                margin-bottom: 50px;
+            }
+
+            input {
+                margin-bottom: 0px;
+                margin-top: 50px;
+            }
+        }
+    </style>
+    <script>
+
+    var dict = {
+        "01.png": "APRÓBOJTORJÁN = Agrimonia eupatoria = Közönséges párlófű",
+        "02.png": "ARANYVESSZŐFŰ = Solidago gigantea Ait. (Solidago serotina Ait.) = Jágerkender =Aranyos istápfű =Aranyos ruta",
+        "03.png": "BENEDEKFŰ = Cnicus benedictus L. = Áldottfű = Áldott bogáncs = Keserű bogáncs",
+        "04.png": "BODZA = Sambucus nigra L.= Fekete bodza",
+        "05.png": "BORÓKA = Juniperus communis L. Közönséges boróka = Gyalogfenyő = Borovicskafenyő",
+        "06.png": "BORSMENTA = Mentha x piperita L.",
+        "07.png": "CICKAFARK = Achillea millefolium L. Közönséges cickafark = Orvosi cickafark = Egérfarkúfű = Ezerlevelűfű",
+        "08.png": "CITROMFŰ = Melissa officinalis L. Orvosi citromfű = Citromszagú melissza = Méhfű = Mézfű",
+        "09.png": "CSIPKERÓZSA = Rosa canina L. Gyepürózsa =Vadrózsa = Ebcsipke",
+        "010.png": "DIÓFA = Juglans regia L.",
+        "011.png": "ÉDESGYÖKÉR = Glycyrrhiza glabra L. Édesfa = Igazi édesgyökér",
+        "012.png": "ERDEI ANGYALGYÖKÉR = Angelica archangelica L. Angyalfű = Orvosi angyélika= Orvosi angyalgyökér",
+        "013.png": "EZERJÓFŰ = Centaurium minus Moench./Centaurium erythraea Rafn. Százforintosfű = Földepe = Kisezerjófű = Keskenylevelű ezerjófű",
+        "014.png": "FARKASALMA - Mérgező!= Aristolochia clematitis L. Közönséges farkasalma = Pipavirág",
+        "015.png": "FEHÉR ÁRVACSALÁN = Lamium album L. Fehér holtcsalán",
+        "016.png": "FEHÉR FAGYÖNGY = Viscum album L. Madárlép = Gyimbor = Fagyöngy",
+        "017.png": "FEHÉRMÁLYVA = Althaea officinalis L. Bársonyos mályva = Orvosi ziliz = Ejbis",
+        "018.png": "FEKETE NADÁLYTŐ = Symphytum officinale L. Fekete gyopár",
+        "019.png": "FEKETE-RIBIZLI = Ribes nigrum L.",
+        "020.png": "FŰZFA = Salix alba L. Fehér fűz",
+        "021.png": "GALAGONYA = Crataegus oxyacantha L. Cseregalagonya",
+        "022.png": "GYERMEKLÁNCFŰ = Taraxacum officinale Web. Pongyola pitypang",
+        "023.png": "HÁRSFA = Tilia cordata Mill = Tilia parvifolia Ehrh. ex Hoffm. Orvosi (Kislevelű) hárs",
+        "024.png": "HOMOKTÖVIS = Hippophae rhamnoides L. Ezüsttövis = Fűztövis",
+        "025.png": "KAKUKKFŰ = Thymus serpyllum L. Vadkakukkfű = Mezei kakukkfű = Démutka",
+        "026.png": "KAMILLA =Matricaria chamomilla L. Orvosi székfű = Bubulyka = Katóka = Pipiske",
+        "027.png": "KASVIRÁG = Echinacea purpurea L. Lángvörös kasvirág = Bíborkasvirág = Piros kúpvirág",
+        "028.png": "KATÁNG = Cichorium intybus L. Katángkóró = Mezei katáng = Vad cikória",
+        "029.png": "KOMLÓ = Humulus lupulus L. Vadkomló = Felfutó komló",
+        "030.png": "KÖKÉNY = Prunus spinosa L. Vadkökény = Szegények kenyere",
+        "031.png": "KÖRÖMVIRÁG = Calendula officinalis L. Kenyérbélvirág = Gyűrűvirág",
+        "032.png": "KÖZÖNSÉGES PALÁSTFŰ = Alchemilla vulgaris L. Palástfű",
+        "033.png": "KUTYABENGE = Rhamnus frangula L. = Frangula alnus Mill. Lángfa = Ebsefa",
+        "034.png": "LEN = Linum usitatissimum L. Lenvirág = Házi len",
+        "035.png": "LEVENDULA = Lavandula officinalis Chaix = Lavandula vera D.C. Francia levendula",
+        "036.png": "LIBAPIMPÓ =Potentilla anserina L. Libavirág = Lúdpázsit = Fehérhátúfű",
+        "037.png": "MACSKAGYÖKÉR = Valeriana officinalis L. Macskagyökönke",
+        "038.png": "MÁRIATÖVIS = Silybum marianum L. Máriabogáncs = Tarkabogáncs",
+        "039.png": "MARTILAPU = Tussilago farfara L. Kereklapu= Partilapu = Lókörműfű = Szattyú",
+        "040.png": "MEDVESZŐLŐ = Arctostaphylos uva-ursi (L.) Spreng. Medvebogyó",
+        "041.png": "MEZEI ZSURLÓ = Equisetum arvense L. Kannamosófű = Bábaguzsaly = Békarokka = Cindrót",
+        "042.png": "NAGYBOJTORJÁN = Arctium lappa L. Közönséges bojtorján = Lapu = Bogáncs = Ragadvány = Útszéli lapi = Keserű Lapu",
+        "043.png": "NAGYCSALÁN = Urtica dioica L. Csípős csalán = Kétlaki csalán = Csólyány",
+        "044.png": "NYÍRFA = Betula pendula Roth. Közönséges nyírfa = Bibircses nyír",
+        "045.png": "ORBÁNCFŰ = Hypericum perforatum L. Csengőlinka = Lyukaslevelűfű",
+        "046.png": "ORVOSI KÁLMOS = Acorus calamus L. Kálmos = Büdössás",
+        "047.png": "ORVOSI SOMKÓRÓ = Melilotus officinalis L. Kőhere = Vad lóhere = Sárkerep",
+        "048.png": "ORVOSI ZSÁLYA = Salvia officinalis L. Kerti zsálya",
+        "049.png": "PÁSZTORTÁSKA = Capsella bursa-pastoris Medik. Paptarsoly = Pásztorerszény = Büdös szaporafű",
+        "050.png": "PETTYEGETETT TÜDŐFŰ=Pulmonaria officinalis L. Orvosi tüdőfű = Tüdőgálna = Pettyegetett fű",
+        "051.png": "SZEDERLEVÉL = Rubus caesius L. Hamvas szed = Vadszeder",
+        "052.png": "SZÖSZÖS ÖKÖRFARKKÓRÓ = Verbascum phlomoides L. Mezei gyertya = Sárga virág",
+        "053.png": "(Közönséges tarackbúza) TARACK = Elymus repens (L.) Gould. = Agropyron repens (L.) P.B. = Agropyron caesium J. & C. Presl. Pörje = Kutyaperje = Fűgyökér",
+        "054.png": "TÖLGYFA = Quercus robur L. Kocsányos tölgy és Kocsánytalan tölgy",
+        "055.png": "ÚTIFÜVEK = Plantago lanceolata L. Lándzsás útifű = Keskenylevelű útifű = Kígyónyelvűfű Széleslevelű útifű = Plantago major L."
+    };
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    for(let z = 0; z < 55; z++) {
+        let c_z = z+1;
+        let c_text = "0" + c_z + ".png";
+        let correct_answer = dict[c_text];
+        let wrong_answers = [];
+        let usedOptions = new Set();
+        usedOptions.add(correct_answer);
+        for(let i = 0; i < 3; i++) {
+            let wrong_txt;
+            do {
+                wrong_txt = Math.floor(Math.random() * 55) + 1;
+                wrong_var = "0" + wrong_txt + ".png"
+            } while (usedOptions.has(dict[wrong_var]));
+            wrong_answers.push(dict[wrong_var]);
+            usedOptions.add(dict[wrong_var]);
+        }
+        let options = [...wrong_answers, correct_answer];
+        shuffleArray(options);
+        document.body.innerHTML += `<div id="${z}"><center><img style="width: 300px; margin-bottom: 30px;" src="img/0${z+1}.png" alt=""></center><br>`;
+        for(let i = 0; i < 4; i++) {
+            let option_txt = options[i];
+            document.getElementById(z).innerHTML += `<input type="radio" value="${option_txt === correct_answer ? 'correct' : 'wrong'}" name="option${z}"><label for="option${z}">${option_txt}</label><br>`;
+        }
+        document.body.innerHTML += `</div>`;
+    }
+
+
+
+    function countCorrectAnswers() {
+        let correctCount = 0;
+        for(let i = 0; i < 55; i++) {
+            let inputs = document.getElementsByName(`option${i}`);
+            for (let j = 0; j < inputs.length; j++) {
+                if (inputs[j].checked && inputs[j].value === 'correct') {
+                    correctCount++;
+                }
+            }
+        }
+        return "Eredmény: " + correctCount + "/55";
+    }
+
+      
+  </script>
+    <center><button onclick="alert(countCorrectAnswers())">Ellenőrzés</button></center>
+
+</body>
+</html>
